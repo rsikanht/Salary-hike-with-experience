@@ -1,0 +1,54 @@
+# Salary_Data -> Build a prediction model for Salary_hike
+
+sh <- read.csv("Salary_Data.csv")
+View(sh)
+colnames(sh) <- c("YE", "SH")
+attach(sh)
+
+# EDA - Exploratory Data Analysis.
+qqnorm(YE)
+qqline(YE)
+qqnorm(sqrt(SH))
+qqline(sqrt(SH))
+hist(YE)
+boxplot(YE, horizontal = T)
+plot(density(YE))
+hist(SH)
+boxplot(SH, horizontal = T)
+plot(density(SH))
+
+# Scatter Plot
+plot(sh)
+# Graph shows strong positive correlation between both the variables
+
+cor(YE, SH)
+# Correlation value is 0.98 which shows strong correlation between the variables
+
+# Regression check
+reg_sh <- lm(SH ~ YE)
+summary(reg_sh)    
+# R^2 value is 0.95 which is a best fit model.
+#Equation can be written as SH=25792.20+9450.0*SH
+
+# Check fitted values of predicted
+reg_sh$fitted.values
+
+# check for associated errors
+reg_sh$residuals
+sum(reg_sh$residuals)
+
+# Confidence interval for 95%
+confint(reg_sh, level = 0.95)
+
+# List down the predicted values along with lsl and usl
+predict(reg_sh, interval = "predict") # See predicted values with confidence interval.
+
+
+# Calculation on Y = B0 + B1*x for prediction check
+25792.20+9450.0*1.1
+25792.20+9450.0*4
+
+# From the provided data set, the correlation value is 0.98 and hence both variables are strong and positively correlated.
+# Co-ef. are significant and co-ef.of Determination value. i.e R^2 is 0.96 which is good.
+# sum of errors is -7.844392e-12 i.e approx 0 and errors are equally distributed.
+# Hence model is best fit and experience is an appropriate input to determine salary hike.
